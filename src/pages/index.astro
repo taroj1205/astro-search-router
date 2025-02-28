@@ -44,18 +44,20 @@ import { bangs } from "../lib/bang";
           >all of DuckDuckGo's bangs.</a
         >
       </p>
-      <form class="url-container" action="/" method="get">
-        <input
-          type="search"
-          class="url-input"
-          value="https://search-router.pages.dev?q=%s"
-          name="q"
-          readonly
-        />
+      <div class="url-container">
+        <form action="/" method="get" style="width: 100%;">
+          <input
+            type="search"
+            class="url-input"
+            value="https://search-router.pages.dev?q=%s"
+            name="q"
+            readonly
+          />
+        </form>
         <button class="copy-button">
           <img src="/clipboard.svg" alt="Copy" />
         </button>
-      </form>
+      </div>
       <a href="/settings">Settings</a>
     </div>
     <footer class="footer">
