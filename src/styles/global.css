@@ -1,0 +1,182 @@
+/* @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"); */
+
+/* Font fallback that closely matches Inter metrics */
+@font-face {
+  font-family: "Inter Fallback";
+  size-adjust: 107%;
+  ascent-override: 90%;
+  src: local("Arial");
+}
+
+:root {
+  font-family: Inter, "Inter Fallback", system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
+    "Open Sans", "Helvetica Neue", sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  line-height: 1.5;
+  font-weight: 400;
+  font-size: 1rem;
+  color: #1a1a1a;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+a {
+  color: #444444;
+}
+a:hover {
+  color: #888888;
+}
+
+button {
+  font: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+input,
+textarea {
+  font: inherit;
+}
+
+/* Add these new styles */
+.url-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+/* Add this new style */
+.content-container {
+  max-width: 36rem;
+  text-align: center;
+  padding: 0 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Update url-input width to be 100% since container will control max width */
+.url-input {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 0.25rem;
+  width: 100%;
+  background: #f5f5f5;
+}
+
+.copy-button {
+  padding: 0.75rem 0.75rem;
+  color: #666;
+  border-radius: 0.25rem;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.copy-button:hover {
+  background: #f0f0f0;
+}
+
+.copy-button:active {
+  background: #e5e5e5;
+}
+
+.copy-button img {
+  width: 1rem;
+  height: 1rem;
+}
+
+.copy-button.copied {
+  background: #28a745;
+}
+
+/* Add footer styles */
+.footer {
+  position: fixed;
+  bottom: 1rem;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.footer a {
+  color: #666;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.footer a:hover {
+  color: #333;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    color: #fff;
+    background: #222;
+  }
+
+  a {
+    color: #fff;
+  }
+
+  .url-input {
+    background: #333;
+    color: #fff;
+  }
+
+  .copy-button {
+    color: #fff;
+  }
+
+  .copy-button:hover {
+    background: #444;
+  }
+
+  .copy-button:active {
+    background: #555;
+  }
+
+  .copy-button img {
+    filter: invert(100%);
+  }
+
+  .footer {
+    color: #fff;
+  }
+
+  .footer a:hover {
+    color: #888;
+  }
+}

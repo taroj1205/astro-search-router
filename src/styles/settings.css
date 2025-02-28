@@ -1,0 +1,106 @@
+@media (prefers-color-scheme: dark) {
+  #autocomplete-results {
+    background-color: #1a202c;
+    color: black;
+    text-align: left;
+  }
+
+  .save-button {
+    background-color: #f0f0f0;
+    color: #1a202c;
+  }
+
+  .save-button:hover {
+    background-color: #ccc;
+  }
+}
+
+.setting {
+  margin: 1rem 0;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.autocomplete-container {
+  position: relative;
+}
+
+#default-bang {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+#autocomplete-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  background-color: white;
+  z-index: 10;
+}
+
+.autocomplete-results {
+  display: none;
+  position: absolute;
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-top: none;
+  width: 100%;
+  z-index: 10;
+}
+
+#autocomplete-results table {
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+}
+
+#autocomplete-results table td {
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+#autocomplete-results table tr.active {
+  background-color: #f0f0f0;
+}
+
+#autocomplete-results table tr:hover {
+  background-color: #2d3748;
+  color: white;
+}
+
+@media (prefers-color-scheme: dark) {
+  #autocomplete-results table tr.active {
+    background-color: #f0f0f0;
+    color: #1a202c;
+  }
+
+  #autocomplete-results table tr:hover {
+    background-color: #2d3748;
+    color: white;
+  }
+}
+
+.save-button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  border: none;
+  background-color: #f0f0f0;
+  color: #1a202c;
+  cursor: pointer;
+}
+
+.save-button:hover {
+  background-color: #ccc;
+}

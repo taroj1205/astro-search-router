@@ -1,0 +1,148 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { bangs } from "../lib/bang";
+---
+
+<script is:inline define:vars={{ bangs }}>
+  const LS_DEFAULT_BANG = localStorage.getItem("default-bang") || "g";
+  const defaultBang = bangs.find((b) => b.t === LS_DEFAULT_BANG);
+  const url = new URL(window.location.href);
+  const query = url.searchParams.get("q")?.trim() ?? "";
+  if (query) {
+    const match = query.match(/!(\S+)/i);
+
+    const bangCandidate = match?.[1]?.toLowerCase();
+    const selectedBang =
+      bangs.find((b) => b.t === bangCandidate) ?? defaultBang;
+
+    // Remove the first bang from the query
+    const cleanQuery = query.replace(/!\S+\s*/i, "").trim();
+
+    // Format of the url is:
+    // https://www.google.com/search?q={{{s}}}
+    const searchUrl = selectedBang?.u.replace(
+      "{{{s}}}",
+      // Replace %2F with / to fix formats like "!ghr+taroj1205/astro-search-router"
+      encodeURIComponent(cleanQuery).replace(/%2F/g, "/")
+    );
+
+    if (searchUrl) {
+      window.location.href = searchUrl;
+    }
+  }
+</script>
+<Layout>
+  <div
+    style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;"
+  >
+    <div class="content-container">
+      <h1>Search Router</h1>
+      <p>
+        DuckDuckGo's bang redirects are too slow. Add the following URL as a
+        custom search engine to your browser. Enables
+        <a href="https://duckduckgo.com/bang.html" target="_blank"
+          >all of DuckDuckGo's bangs.</a
+        >
+      </p>
+      <form class="url-container" action="/" method="get">
+        <input
+          type="search"
+          class="url-input"
+          value="https://search-router.pages.dev?q=%s"
+          name="q"
+          readonly
+        />
+        <button class="copy-button">
+          <img src="/clipboard.svg" alt="Copy" />
+        </button>
+      </form>
+      <a href="/settings">Settings</a>
+    </div>
+    <footer class="footer">
+      <a href="https://x.com/taroj1205" target="_blank">taroj1205</a>
+      •
+      <a href="https://github.com/taroj1205/astro-search-router" target="_blank"
+        >github</a
+      >
+      •
+      <a
+        href="https://cloud.umami.is/share/B745blkyzznS2vaY/search-router.pages.dev"
+        target="_blank">analytics</a
+      >
+    </footer>
+    <script>
+      const copyButton =
+        document.querySelector<HTMLButtonElement>(".copy-button");
+      const copyIcon = copyButton?.querySelector<HTMLImageElement>("img");
+      const urlInput = document.querySelector<HTMLInputElement>(".url-input");
+
+      copyButton?.addEventListener("click", async () => {
+        await navigator.clipboard.writeText(urlInput?.value ?? "");
+        if (!copyIcon || !urlInput) return;
+        copyIcon.src = "/clipboard-check.svg";
+
+        setTimeout(() => {
+          copyIcon.src = "/clipboard.svg";
+        }, 2000);
+      });
+
+      // Add context menu for adding search engine
+      const searchEngineInput = document.getElementById("search-engine-input");
+      if (searchEngineInput) {
+        searchEngineInput.addEventListener("contextmenu", (e) => {
+          e.preventDefault();
+
+          // Check if the browser is Chrome
+          const isChrome =
+            /Chrome/.test(navigator.userAgent) &&
+            /Google Inc/.test(navigator.vendor);
+
+          if (isChrome) {
+            // Create a custom dialog to guide the user
+            const dialog = document.createElement("dialog");
+            dialog.innerHTML = `
+              <h3>Add Search Engine</h3>
+              <p>To add this as a search engine in Chrome:</p>
+              <ol>
+                <li>Right-click the Chrome address bar</li>
+                <li>Select "Edit search engines"</li>
+                <li>Click "Add" button under "Other search engines"</li>
+                <li>Name: Search Router</li>
+                <li>Keyword: sr</li>
+                <li>URL: https://search-router.pages.dev?q=%s</li>
+              </ol>
+              <button id="close-dialog">Close</button>
+            `;
+            document.body.appendChild(dialog);
+            dialog.showModal();
+
+            const closeButton = document.getElementById("close-dialog");
+            closeButton?.addEventListener("click", () => {
+              dialog.close();
+              dialog.remove();
+            });
+          } else {
+            alert("This feature is currently optimized for Google Chrome.");
+          }
+        });
+      }
+    </script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("/sw.js")
+            .then((registration) => {
+              console.log(
+                "ServiceWorker registration successful with scope: ",
+                registration.scope
+              );
+            })
+            .catch((err) => {
+              console.log("ServiceWorker registration failed: ", err);
+            });
+        });
+      }
+    </script>
+  </div>
+</Layout>

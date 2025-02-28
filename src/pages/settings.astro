@@ -1,0 +1,185 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { bangs } from "../lib/bang";
+import "../styles/settings.css";
+---
+
+<Layout>
+  <div
+    style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;"
+  >
+    <div class="content-container">
+      <h1>Search Router Settings</h1>
+      <form id="settings-form">
+        <div class="setting">
+          <label for="default-bang">Default Search Engine:</label>
+          <div class="autocomplete-container">
+            <input
+              type="text"
+              id="default-bang"
+              name="default-bang"
+              placeholder="Search search engines..."
+              autocomplete="off"
+            />
+            <div id="autocomplete-results" class="autocomplete-results">
+              <table>
+                <tbody id="autocomplete-results-table"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="save-button">Save Settings</button>
+      </form>
+    </div>
+    <footer class="footer">
+      <a href="https://x.com/taroj1205" target="_blank">taroj1205</a>
+      •
+      <a href="https://github.com/taroj1205/astro-search-router" target="_blank"
+        >github</a
+      >
+      •
+      <a
+        href="https://cloud.umami.is/share/B745blkyzznS2vaY/search-router.pages.dev"
+        target="_blank">analytics</a
+      >
+    </footer>
+  </div>
+</Layout>
+
+<script define:vars={{ bangs }}>
+  const LS_DEFAULT_BANG = localStorage.getItem("default-bang") || "g";
+  const settingsForm = document.getElementById("settings-form");
+  const defaultBangInput = document.getElementById("default-bang");
+  const autocompleteResults = document.getElementById("autocomplete-results");
+  const autocompleteResultsTable = document.getElementById(
+    "autocomplete-results-table"
+  );
+
+  function filterBangs(query) {
+    const results = [];
+    for (const bang of bangs) {
+      let score = 0;
+      if (bang.t === query) {
+        score = 10000;
+      } else if (bang.t.startsWith(query)) {
+        score = 5000;
+      } else {
+        let queryIndex = 0;
+        for (let i = 0; i < bang.d.length; i++) {
+          const char = bang.d[i].toLowerCase();
+          if (
+            queryIndex < query.length &&
+            char === query[queryIndex].toLowerCase()
+          ) {
+            score += 1;
+            queryIndex++;
+          }
+        }
+      }
+      if (score > 0) {
+        results.push({ score, bang });
+      }
+    }
+    results.sort((a, b) => b.score - a.score);
+    return results.slice(0, 5).map((r) => r.bang);
+  }
+
+  function displayAutocompleteResults(results) {
+    autocompleteResultsTable.innerHTML = results
+      .map(
+        (bang, index) =>
+          `<tr data-bang="${bang.t}" data-index="${index}">
+            <td>${bang.d}</td>
+            <td>${bang.t}</td>
+          </tr>`
+      )
+      .join("");
+  }
+
+  let activeResultIndex = -1;
+
+  function updateActiveResult(direction) {
+    const results = autocompleteResultsTable.querySelectorAll("tr");
+    if (results.length === 0) return;
+
+    // Remove previous active class
+    results.forEach((result) => result.classList.remove("active"));
+
+    // Update index
+    if (direction === "ArrowDown") {
+      activeResultIndex = (activeResultIndex + 1) % results.length;
+    } else if (direction === "ArrowUp") {
+      activeResultIndex =
+        (activeResultIndex - 1 + results.length) % results.length;
+    }
+
+    // Add active class to new result
+    const activeResult = results[activeResultIndex];
+    activeResult.classList.add("active");
+  }
+
+  defaultBangInput.addEventListener("input", (event) => {
+    const query = event.target.value;
+    if (document.activeElement === defaultBangInput) {
+      const filteredBangs = filterBangs(query);
+      displayAutocompleteResults(filteredBangs);
+      autocompleteResults.style.display =
+        filteredBangs.length > 0 ? "block" : "none";
+    } else {
+      autocompleteResultsTable.innerHTML = "";
+      autocompleteResults.style.display = "none";
+    }
+  });
+
+  defaultBangInput.addEventListener("focus", (event) => {
+    const query = event.target.value;
+    const filteredBangs = filterBangs(query);
+    if (filteredBangs.length > 0) {
+      displayAutocompleteResults(filteredBangs);
+      autocompleteResults.style.display = "block";
+    }
+  });
+
+  defaultBangInput.addEventListener("blur", () => {
+    // Slight delay to allow click events on results to work
+    setTimeout(() => {
+      autocompleteResultsTable.innerHTML = "";
+      autocompleteResults.style.display = "none";
+    }, 200);
+  });
+
+  defaultBangInput.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+      event.preventDefault(); // Prevent scrolling
+      updateActiveResult(event.key);
+    } else if (event.key === "Enter") {
+      const activeResult = autocompleteResultsTable.querySelector(".active");
+      if (activeResult) {
+        const selectedBang = activeResult.getAttribute("data-bang");
+        defaultBangInput.value = selectedBang;
+        autocompleteResultsTable.innerHTML = "";
+        activeResultIndex = -1;
+      }
+    }
+  });
+
+  autocompleteResultsTable.addEventListener("click", (event) => {
+    const target = event.target;
+    if (target.matches(".autocomplete-results tr")) {
+      const selectedBang = target.getAttribute("data-bang");
+      defaultBangInput.value = selectedBang;
+      autocompleteResultsTable.innerHTML = "";
+    }
+  });
+
+  if (settingsForm && defaultBangInput) {
+    defaultBangInput.value = LS_DEFAULT_BANG;
+
+    settingsForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const defaultBang = defaultBangInput.value;
+      localStorage.setItem("default-bang", defaultBang);
+      window.location.href = "/";
+    });
+  }
+</script>
