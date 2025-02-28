@@ -1,48 +1,92 @@
-# Astro Starter Kit: Basics
+# Search Router
 
-```sh
-pnpm create astro@latest -- --template basics
+## Overview
+
+Search Router is a lightweight web application that provides a faster alternative to DuckDuckGo's bang redirects. It allows users to quickly redirect their searches to various platforms using bang commands.
+
+## Features
+
+- Instant search redirects using DuckDuckGo-style bang commands
+- Supports all DuckDuckGo bang shortcuts
+- Customizable default search engine
+- Simple, minimalist user interface
+
+## Installation
+
+### Prerequisites
+
+- Node.js (version 18 or later)
+- pnpm
+
+### Steps
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/yourusername/astro-search-router.git
+   cd astro-search-router
+   ```
+
+2. Install dependencies:
+   ```bash
+   pnpm install
+   ```
+
+## Usage
+
+### Development
+
+Run the development server:
+
+```bash
+pnpm dev
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+The application will be available at `http://localhost:3000`
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+### Building
 
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
+To create a production build:
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
+```bash
+pnpm build
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+### Preview
 
-## 🧞 Commands
+To preview the production build:
 
-All commands are run from the root of the project, from a terminal:
+```bash
+pnpm preview
+```
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
+## How to Use
 
-## 👀 Want to learn more?
+1. Open the application
+2. Start typing your search query
+3. Prefix your query with a bang command (e.g., `!g` for Google, `!gh` for GitHub)
+4. Press Enter to be redirected to the corresponding search results
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+### Example Bang Commands
+
+- `!g`: Google Search
+- `!gh`: GitHub Search
+- `!yt`: YouTube Search
+- `!w`: Wikipedia Search
+
+For a full list of supported bang commands, visit [DuckDuckGo Bang Documentation](https://duckduckgo.com/bang.html)
+
+## Configuration
+
+You can set a default search engine by modifying the `localStorage` key `default-bang`.
+
+## Technologies
+
+- Astro
+- TypeScript
+- Vite PWA
+- pnpm
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
