@@ -145,7 +145,6 @@ textarea {
 @media (prefers-color-scheme: dark) {
   body {
     color: #fff;
-    background: #222;
   }
 
   a {
