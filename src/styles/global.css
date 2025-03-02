@@ -16,6 +16,7 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color-scheme: dark light;
 }
 
 * {
@@ -144,7 +145,6 @@ textarea {
 @media (prefers-color-scheme: dark) {
   body {
     color: #fff;
-    background: #222;
   }
 
   a {
